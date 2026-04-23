@@ -34,12 +34,21 @@ export default function Layout() {
               Sports
             </NavLink>
             <NavLink
+              to="/live"
+              className={({ isActive }) =>
+                `flex items-center gap-1.5 ${isActive ? "text-white" : "hover:text-white"}`
+              }
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+              Live &amp; Today
+            </NavLink>
+            <NavLink
               to="/events"
               className={({ isActive }) =>
                 isActive ? "text-white" : "hover:text-white"
               }
             >
-              Upcoming Events
+              Upcoming
             </NavLink>
           </nav>
 

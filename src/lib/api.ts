@@ -181,7 +181,88 @@ export const api = {
     getJson<{ event: SportEvent[] | null }>(
       `/searchevents.php?e=${encodeURIComponent(q)}`
     ).then((d) => d.event ?? []),
+
+  eventsDay: (date: string, sport?: string) =>
+    getJson<{ events: SportEvent[] | null }>(
+      `/eventsday.php?d=${date}${sport ? `&s=${encodeURIComponent(sport)}` : ""}`
+    ).then((d) => d.events ?? []),
+
+  lookupEvent: (id: string) =>
+    getJson<{ events: SportEvent[] | null }>(
+      `/lookupevent.php?id=${encodeURIComponent(id)}`
+    ).then((d) => d.events?.[0]),
+
+  playerHonours: (playerId: string) =>
+    getJson<{ honours: Honour[] | null }>(
+      `/lookuphonours.php?id=${encodeURIComponent(playerId)}`
+    ).then((d) => d.honours ?? []),
+
+  playerFormerTeams: (playerId: string) =>
+    getJson<{ formerteams: FormerTeam[] | null }>(
+      `/lookupformerteams.php?id=${encodeURIComponent(playerId)}`
+    ).then((d) => d.formerteams ?? []),
+
+  playerContracts: (playerId: string) =>
+    getJson<{ contracts: Contract[] | null }>(
+      `/lookupcontracts.php?id=${encodeURIComponent(playerId)}`
+    ).then((d) => d.contracts ?? []),
+
+  teamEquipment: (teamId: string) =>
+    getJson<{ equipment: Equipment[] | null }>(
+      `/lookupequipment.php?id=${encodeURIComponent(teamId)}`
+    ).then((d) => d.equipment ?? []),
 };
+
+export interface Honour {
+  id: string;
+  idPlayer: string;
+  idTeam: string;
+  idLeague: string;
+  idHonour: string;
+  strSport: string;
+  strPlayer: string;
+  strTeam: string;
+  strTeamBadge?: string;
+  strHonour: string;
+  strHonourLogo?: string;
+  strSeason?: string;
+}
+
+export interface FormerTeam {
+  id: string;
+  idPlayer: string;
+  idFormerTeam: string;
+  strSport: string;
+  strPlayer: string;
+  strFormerTeam: string;
+  strMoveType?: string;
+  strBadge?: string;
+  strJoined?: string;
+  strDeparted?: string;
+}
+
+export interface Contract {
+  id: string;
+  idPlayer: string;
+  idTeam: string;
+  strSport: string;
+  strPlayer: string;
+  strTeam: string;
+  strBadge?: string;
+  strYearStart?: string;
+  strYearEnd?: string;
+  strWage?: string;
+}
+
+export interface Equipment {
+  idEquipment: string;
+  idTeam: string;
+  date: string;
+  strSeason: string;
+  strEquipment: string;
+  strType: string;
+  strUsername: string;
+}
 
 export function slugify(s: string): string {
   return s

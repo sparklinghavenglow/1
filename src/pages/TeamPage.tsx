@@ -28,6 +28,11 @@ export default function TeamPage() {
     queryFn: () => api.lastTeamEvents(id),
     enabled: !!id,
   });
+  const equipment = useQuery({
+    queryKey: ["team-equipment", id],
+    queryFn: () => api.teamEquipment(id),
+    enabled: !!id,
+  });
 
   if (team.isLoading) return <div className="p-6"><Loading /></div>;
   if (team.error) return <div className="p-6"><ErrorMsg error={team.error} /></div>;
@@ -133,6 +138,28 @@ export default function TeamPage() {
               ))}
             </div>
           </section>
+
+          {equipment.data && equipment.data.length > 0 && (
+            <section>
+              <h2 className="text-lg font-semibold mb-3">Kits &amp; equipment</h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                {equipment.data.slice(0, 12).map((eq) => (
+                  <div key={eq.idEquipment} className="card p-3">
+                    <div className="aspect-square bg-panel2 rounded-md flex items-center justify-center p-2">
+                      <SmartImage
+                        src={eq.strEquipment}
+                        alt={`${eq.strType} ${eq.strSeason}`}
+                        className="max-w-full max-h-full object-contain"
+                      />
+                    </div>
+                    <div className="mt-2 text-xs text-slate-400">
+                      {eq.strType} · {eq.strSeason}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
 
           <section>
             <h2 className="text-lg font-semibold mb-3">Upcoming</h2>

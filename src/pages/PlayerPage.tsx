@@ -11,6 +11,21 @@ export default function PlayerPage() {
     queryFn: () => api.lookupPlayer(id),
     enabled: !!id,
   });
+  const honours = useQuery({
+    queryKey: ["player-honours", id],
+    queryFn: () => api.playerHonours(id),
+    enabled: !!id,
+  });
+  const former = useQuery({
+    queryKey: ["player-former", id],
+    queryFn: () => api.playerFormerTeams(id),
+    enabled: !!id,
+  });
+  const contracts = useQuery({
+    queryKey: ["player-contracts", id],
+    queryFn: () => api.playerContracts(id),
+    enabled: !!id,
+  });
 
   if (isLoading) return <div className="p-6"><Loading /></div>;
   if (error) return <div className="p-6"><ErrorMsg error={error} /></div>;
@@ -93,11 +108,122 @@ export default function PlayerPage() {
           </div>
         </aside>
 
-        {p.strDescriptionEN && (
-          <div className="card p-5 text-sm text-slate-300 whitespace-pre-line leading-relaxed">
-            {p.strDescriptionEN}
-          </div>
-        )}
+        <div className="space-y-6 min-w-0">
+          {p.strDescriptionEN && (
+            <div className="card p-5 text-sm text-slate-300 whitespace-pre-line leading-relaxed max-h-96 overflow-auto">
+              {p.strDescriptionEN}
+            </div>
+          )}
+
+          {honours.data && honours.data.length > 0 && (
+            <section>
+              <h2 className="text-lg font-semibold mb-3">
+                Honours ({honours.data.length})
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {honours.data.map((h) => (
+                  <div
+                    key={h.id}
+                    className="card p-3 flex items-center gap-3 min-w-0"
+                  >
+                    {h.strHonourLogo && (
+                      <SmartImage
+                        src={h.strHonourLogo}
+                        alt=""
+                        className="w-10 h-10 object-contain shrink-0"
+                      />
+                    )}
+                    <div className="min-w-0">
+                      <div className="text-sm font-medium truncate">
+                        {h.strHonour}
+                      </div>
+                      <div className="text-xs text-slate-400 truncate flex items-center gap-1.5">
+                        {h.strTeamBadge && (
+                          <SmartImage
+                            src={h.strTeamBadge}
+                            alt=""
+                            className="w-4 h-4 object-contain"
+                          />
+                        )}
+                        <span className="truncate">
+                          {h.strTeam}
+                          {h.strSeason ? ` · ${h.strSeason}` : ""}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {former.data && former.data.length > 0 && (
+            <section>
+              <h2 className="text-lg font-semibold mb-3">
+                Former teams ({former.data.length})
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {former.data.map((t) => (
+                  <Link
+                    key={t.id}
+                    to={`/teams/${t.idFormerTeam}`}
+                    className="card p-3 flex items-center gap-3 min-w-0"
+                  >
+                    {t.strBadge && (
+                      <SmartImage
+                        src={t.strBadge}
+                        alt=""
+                        className="w-10 h-10 object-contain shrink-0"
+                      />
+                    )}
+                    <div className="min-w-0">
+                      <div className="text-sm font-medium truncate">
+                        {t.strFormerTeam}
+                      </div>
+                      <div className="text-xs text-slate-400 truncate">
+                        {t.strJoined ?? "?"} – {t.strDeparted ?? "?"}
+                        {t.strMoveType ? ` · ${t.strMoveType}` : ""}
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {contracts.data && contracts.data.length > 0 && (
+            <section>
+              <h2 className="text-lg font-semibold mb-3">
+                Contracts ({contracts.data.length})
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {contracts.data.map((c) => (
+                  <div
+                    key={c.id}
+                    className="card p-3 flex items-center gap-3 min-w-0"
+                  >
+                    {c.strBadge && (
+                      <SmartImage
+                        src={c.strBadge}
+                        alt=""
+                        className="w-10 h-10 object-contain shrink-0"
+                      />
+                    )}
+                    <div className="min-w-0">
+                      <div className="text-sm font-medium truncate">
+                        {c.strTeam}
+                      </div>
+                      <div className="text-xs text-slate-400 truncate">
+                        {c.strYearStart ?? "?"} – {c.strYearEnd ?? "?"}
+                        {c.strWage ? ` · ${c.strWage}` : ""}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+        </div>
       </div>
     </div>
   );

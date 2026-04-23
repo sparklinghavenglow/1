@@ -8,6 +8,7 @@ import TeamPage from "./pages/TeamPage";
 import PlayerPage from "./pages/PlayerPage";
 import EventsPage from "./pages/EventsPage";
 import SearchPage from "./pages/SearchPage";
+import LivePage from "./pages/LivePage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -32,6 +33,7 @@ export default function App() {
             <Route path="teams/:id" element={<TeamPage />} />
             <Route path="players/:id" element={<PlayerPage />} />
             <Route path="events" element={<EventsPage />} />
+            <Route path="live" element={<LivePage />} />
             <Route path="search" element={<SearchPage />} />
           </Route>
         </Routes>
