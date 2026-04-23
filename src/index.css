@@ -1,0 +1,53 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-ink text-slate-100 font-display antialiased;
+  background-image: radial-gradient(
+      900px 600px at 20% -10%,
+      rgba(34, 211, 238, 0.08),
+      transparent 60%
+    ),
+    radial-gradient(
+      800px 500px at 110% 10%,
+      rgba(167, 139, 250, 0.08),
+      transparent 60%
+    );
+}
+
+.card {
+  @apply bg-panel border border-edge rounded-xl overflow-hidden hover:border-accent/60 transition-colors;
+}
+
+.chip {
+  @apply inline-flex items-center gap-1.5 text-xs px-2 py-1 rounded-full bg-panel2 border border-edge text-slate-300;
+}
+
+.btn {
+  @apply inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-panel2 border border-edge hover:border-accent/60 transition-colors text-sm;
+}
+
+.input {
+  @apply w-full bg-panel2 border border-edge rounded-lg px-4 py-3 outline-none focus:border-accent placeholder:text-slate-500;
+}
+
+.link {
+  @apply text-accent hover:underline;
+}
+
+.skeleton {
+  @apply animate-pulse bg-panel2 rounded;
+}
